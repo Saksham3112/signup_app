@@ -62,8 +62,9 @@ class _HomePageState extends State<HomePage> {
   String _signedDB = "";
   Map userData = {};
   Map currDetails = {"age": 1, "gender": "male"};
-  TextEditingController _textFieldControllerAge = TextEditingController();
-  TextEditingController _textFieldControllerGender = TextEditingController();
+  final TextEditingController _textFieldControllerAge = TextEditingController();
+  final TextEditingController _textFieldControllerGender =
+      TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -148,10 +149,10 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pop(context);
                   });
                 }),
-                child: Text("Deny"),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.red.shade700)),
+                child: const Text("Deny"),
               ),
               ElevatedButton(
                 onPressed: (() {
@@ -167,9 +168,9 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pop(context);
                   });
                 }),
-                child: Text("Ok"),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.green)),
+                child: const Text("Ok"),
               )
             ],
           );
@@ -191,85 +192,71 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             color: Colors.grey.shade800,
             child: Column(
-              children: [
-                Column(
-                  children: List.from(names.map((e) => Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                  height: 55,
-                                  width: 200,
-                                  child: Flexible(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      isSignedIn(e['id']) == false
-                                          ? _displayTextInputDialog(context, e)
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      userPage(
-                                                          userDetails:
-                                                              userData[e['id']],
-                                                          userName: e['name'])),
-                                            );
-                                      ;
-                                    },
+              children: List.from(names.map((e) => Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            height: 55,
+                            width: 200,
+                            child: GestureDetector(
+                              onTap: () {
+                                isSignedIn(e['id']) == false
+                                    ? _displayTextInputDialog(context, e)
+                                    : Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => userPage(
+                                                userDetails: userData[e['id']],
+                                                userName: e['name'])),
+                                      );
+                                ;
+                              },
+                              child: Text(
+                                e['name'],
+                                style: TextStyle(
+                                    color: Colors.grey.shade400, fontSize: 35),
+                              ),
+                            )),
+                        isSignedIn(e['id']) == false
+                            ? ElevatedButton(
+                                onPressed: (() {
+                                  _displayTextInputDialog(context, e);
+                                }),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.green)),
+                                child: const SizedBox(
+                                  width: 100,
+                                  child: Center(
                                     child: Text(
-                                      e['name'],
-                                      style: TextStyle(
-                                          color: Colors.grey.shade400,
-                                          fontSize: 35),
+                                      "Sign In",
+                                      style: TextStyle(fontSize: 20),
                                     ),
-                                  ))),
-                              isSignedIn(e['id']) == false
-                                  ? ElevatedButton(
-                                      onPressed: (() {
-                                        setState(() {
-                                          _displayTextInputDialog(context, e);
-                                        });
-                                      }),
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.green)),
-                                      child: Container(
-                                        width: 100,
-                                        child: Center(
-                                          child: Text(
-                                            "Sign In",
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                        ),
-                                      ))
-                                  : ElevatedButton(
-                                      onPressed: (() {
-                                        setState(() {
-                                          _logOut(e['id']);
-                                        });
-                                      }),
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.red.shade700)),
-                                      child: Container(
-                                        width: 100,
-                                        child: Center(
-                                          child: Text(
-                                            "Sign Out",
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                        ),
-                                      ))
-                            ],
-                          ),
-                        ),
-                      ))),
-                ),
-              ],
+                                  ),
+                                ))
+                            : ElevatedButton(
+                                onPressed: (() {
+                                  setState(() {
+                                    _logOut(e['id']);
+                                  });
+                                }),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.red.shade700)),
+                                child: const SizedBox(
+                                  width: 100,
+                                  child: Center(
+                                    child: Text(
+                                      "Sign Out",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                ))
+                      ],
+                    ),
+                  ))),
             ),
           ),
         ),
